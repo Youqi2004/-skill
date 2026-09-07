@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VOXU 智能戒指官号运营规划</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #667085;
+      --paper: #f8fafc;
+      --card: #ffffff;
+      --line: #dae4ed;
+      --navy: #132238;
+      --teal: #0b8f86;
+      --blue: #2457d6;
+      --amber: #c87912;
+      --shadow: 0 24px 72px rgba(17, 24, 39, .16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #e7eef5;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    .deck {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      transform: translate(-50%, -50%) scale(1);
+      transform-origin: center;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      padding: 42px 58px 48px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .97), rgba(248, 250, 252, .98)),
+        var(--paper);
+      animation: enter .22s ease-out;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes enter {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 20;
+      width: 100%;
+      height: 5px;
+      background: #dce6ee;
+    }
+
+    .progress span {
+      display: block;
+      width: 7.69%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--blue), var(--amber));
+      transition: width .22s ease;
+    }
+
+    .counter {
+      position: absolute;
+      top: 22px;
+      right: 32px;
+      z-index: 20;
+      color: #778294;
+      font-size: 15px;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .nav {
+      position: absolute;
+      right: 26px;
+      bottom: 22px;
+      z-index: 30;
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav button {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(17, 24, 39, .14);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .9);
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, .12);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: 70px;
+      font-weight: 880;
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 1010px;
+      font-size: 46px;
+      font-weight: 860;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 850;
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin: 5px 0;
+      color: #4b5563;
+      font-size: 15px;
+      line-height: 1.34;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 13px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 28px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--teal);
+    }
+
+    .lead {
+      max-width: 920px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.42;
+    }
+
+    .focus {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      max-width: 1080px;
+      margin: 15px 0 20px;
+      padding: 11px 15px;
+      border-left: 4px solid var(--teal);
+      border-radius: 0 10px 10px 0;
+      background: #edf6f6;
+      color: #3b4654;
+      font-size: 15px;
+      line-height: 1.38;
+    }
+
+    .focus strong {
+      flex: 0 0 auto;
+      color: var(--teal);
+      font-weight: 900;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 27px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #e8f4f2;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .photo {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #dbe5ee;
+      box-shadow: 0 20px 58px rgba(17, 24, 39, .17);
+    }
+
+    .photo img,
+    .stage-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo::after,
+    .stage-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 52%, rgba(17, 24, 39, .24));
+      pointer-events: none;
+    }
+
+    .cover-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap: 42px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .cover-grid .photo {
+      min-height: 470px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 26px;
+      max-width: 740px;
+    }
+
+    .mini-card,
+    .card,
+    .panel,
+    .matrix-card,
+    .detail-card,
+    .metric-card,
+    .week-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+    }
+
+    .mini-card {
+      min-height: 112px;
+      padding: 16px;
+    }
+
+    .mini-card strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--navy);
+      font-size: 17px;
+    }
+
+    .mini-card span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .three-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .two-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      min-height: 218px;
+      padding: 22px;
+    }
+
+    .card .num,
+    .panel .num {
+      display: block;
+      margin-bottom: 16px;
+      color: var(--blue);
+      font-size: 39px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .card p,
+    .panel p,
+    .matrix-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.42;
+    }
+
+    .target-row {
+      display: grid;
+      grid-template-columns: 230px repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f9fbfd;
+    }
+
+    .target-row div {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #fff;
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .target-row strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .position-layout {
+      display: grid;
+      grid-template-columns: 410px minmax(0, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .quote {
+      padding: 28px;
+      border-radius: 16px;
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .quote .big {
+      font-size: 38px;
+      font-weight: 880;
+      line-height: 1.17;
+    }
+
+    .quote p {
+      margin-top: 18px;
+      color: rgba(255, 255, 255, .74);
+      font-size: 17px;
+      line-height: 1.48;
+    }
+
+    .value-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      min-height: 246px;
+      padding: 22px;
+    }
+
+    .panel .num {
+      color: var(--teal);
+    }
+
+    .content-layout {
+      display: grid;
+      grid-template-columns: 365px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .percent-box {
+      padding: 24px;
+      border-radius: 16px;
+      background: #fff7eb;
+      border: 1px solid #f0d4aa;
+    }
+
+    .percent-box h3 {
+      color: #7a4508;
+    }
+
+    .percent-box p {
+      margin-top: 12px;
+      color: #6b4b21;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .matrix-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .matrix-row {
+      display: grid;
+      grid-template-columns: 108px 1fr 48px;
+      gap: 12px;
+      align-items: center;
+      min-height: 48px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .matrix-row strong {
+      font-size: 16px;
+      color: var(--ink);
+    }
+
+    .bar {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e8eef5;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+    }
+
+    .matrix-row em {
+      color: var(--navy);
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .matrix-card {
+      min-height: 94px;
+      padding: 12px 14px;
+    }
+
+    .matrix-card h3 {
+      font-size: 17px;
+    }
+
+    .matrix-card p {
+      margin-top: 6px;
+      font-size: 13px;
+      line-height: 1.32;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .stage-tile {
+      position: relative;
+      min-height: 340px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+    }
+
+    .stage-tile::before {
+      content: attr(data-num);
+      display: block;
+      margin-bottom: 16px;
+      color: #d5dde6;
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .stage-tile.now {
+      border-color: rgba(11, 143, 134, .46);
+      background: #f0faf8;
+    }
+
+    .period {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .stage-tile p {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.38;
+    }
+
+    .stage-tile .output {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      left: 18px;
+      padding-top: 11px;
+      border-top: 1px solid var(--line);
+      color: #344054;
+      font-size: 13px;
+      line-height: 1.34;
+    }
+
+    .stage-page {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 0;
+    }
+
+    .stage-side {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+    }
+
+    .stage-photo {
+      position: relative;
+      height: 204px;
+      overflow: hidden;
+      background: #dbe5ee;
+    }
+
+    .stage-summary {
+      padding: 17px 19px 18px;
+    }
+
+    .stage-summary strong {
+      display: block;
+      color: var(--teal);
+      font-size: 20px;
+      margin-bottom: 9px;
+    }
+
+    .stage-summary p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.42;
+    }
+
+    .stage-summary .badge {
+      margin-top: 14px;
+    }
+
+    .stage-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+    .detail-card {
+      min-height: 156px;
+      padding: 15px 17px;
+    }
+
+    .detail-card h3 {
+      margin-bottom: 7px;
+      font-size: 17px;
+    }
+
+    .detail-card li {
+      margin: 3px 0;
+      font-size: 14px;
+      line-height: 1.27;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .week-card {
+      min-height: 352px;
+      padding: 19px;
+    }
+
+    .week-card strong {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--teal);
+      font-size: 20px;
+    }
+
+    .week-card p {
+      margin-bottom: 12px;
+      color: var(--ink);
+      font-size: 17px;
+      font-weight: 850;
+      line-height: 1.28;
+    }
+
+    .metrics-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 365px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .metric-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric-card {
+      min-height: 74px;
+      padding: 14px 16px;
+    }
+
+    .metric-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 16px;
+    }
+
+    .metric-card span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .next-box {
+      padding: 24px;
+      border-radius: 16px;
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .next-box h3 {
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    .next-box li,
+    .next-box p {
+      color: rgba(255, 255, 255, .76);
+    }
+
+    .note {
+      margin-top: 12px;
+      color: #768294;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" id="deck">
+    <div class="progress"><span id="progressBar"></span></div>
+    <div class="counter" id="counter">01 / 13</div>
+
+    <section class="slide active">
+      <div class="cover-grid">
+        <div>
+          <div class="kicker">VOXU Official Accounts</div>
+          <h1>VOXU 智能戒指官号运营规划</h1>
+          <p class="lead">小红书 / 视频号 / 抖音统一运营规划：围绕产品认知、种草内容、体验官招募和后续直播转化建立官号内容体系。</p>
+          <div class="focus"><strong>本页重点</strong><span>说明这份汇报的核心结论：官号先建立 VOXU 的产品认知，再通过真实体验内容建立信任，最后承接直播和转化。</span></div>
+          <div class="mini-grid">
+            <div class="mini-card"><strong>核心目标</strong><span>建立 VOXU 产品认知，而不是一开始就强销售。</span></div>
+            <div class="mini-card"><strong>差异表达</strong><span>VOXU 是身体状态的翻译官。</span></div>
+            <div class="mini-card"><strong>增长路径</strong><span>认知 -> 招募 -> 种草 -> 信任 -> 直播转化。</span></div>
+          </div>
+        </div>
+        <div class="photo">
+          <img src="新视频画面截图_拆解表/02_wearing-ring_10.0s.jpg" alt="VOXU 智能戒指佩戴展示">
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Operating Goal</div>
+      <h2>账号运营目标：建立 VOXU 产品认知</h2>
+      <div class="focus"><strong>本页重点</strong><span>明确官号第一阶段最重要的任务：让用户认识 VOXU、理解 VOXU、记住 VOXU 的差异化产品形象。</span></div>
+      <div class="position-layout">
+        <div class="quote">
+          <div class="big">VOXU 是身体状态的翻译官。</div>
+          <p>它不是只展示一堆数据，而是把心率、血氧、HRV、皮肤温度、睡眠和活动数据，翻译成用户能理解的长期身体状态趋势。</p>
+          <p>官号要树立的产品形象：一枚帮助用户看懂自己状态变化的生活科技型智能戒指。</p>
+        </div>
+        <div class="two-grid">
+          <div class="card">
+            <span class="badge">目标 01</span>
+            <h3 style="margin-top:14px;">建立产品基础认知</h3>
+            <p>让用户知道 VOXU 是什么、能记录什么、为什么适合长期佩戴。</p>
+            <ul>
+              <li>产品介绍</li>
+              <li>佩戴场景</li>
+              <li>App 数据展示</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="badge">目标 02</span>
+            <h3 style="margin-top:14px;">建立差异化表达</h3>
+            <p>把普通的“数据记录”升级为“趋势理解”，让 VOXU 不被参数淹没。</p>
+            <ul>
+              <li>身体状态翻译官</li>
+              <li>长期趋势观察</li>
+              <li>生活状态参考</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="badge">目标 03</span>
+            <h3 style="margin-top:14px;">启动体验官转化</h3>
+            <p>用产品认知内容承接评论、收藏和私信，为体验官招募做准备。</p>
+            <ul>
+              <li>私信关键词</li>
+              <li>报名引导</li>
+              <li>素材回收</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="badge">目标 04</span>
+            <h3 style="margin-top:14px;">沉淀后续转化资产</h3>
+            <p>把 FAQ、真实反馈、直播切片和案例内容变成长期可复用资产。</p>
+            <ul>
+              <li>真实种草</li>
+              <li>直播导流</li>
+              <li>购买前答疑</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Positioning</div>
+      <h2>账号定位：生活科技型智能穿戴账号</h2>
+      <div class="focus"><strong>本页重点</strong><span>说明 VOXU 官号不是泛健康号，也不是硬件参数号，而是围绕日常状态管理讲智能戒指。</span></div>
+      <div class="three-grid">
+        <div class="card">
+          <span class="num">01</span>
+          <h3>内容主题</h3>
+          <p>围绕睡眠、恢复、熬夜、运动后状态和长期佩戴体验展开。</p>
+          <ul>
+            <li>睡醒还是累</li>
+            <li>晚睡后的状态变化</li>
+            <li>运动后的恢复节奏</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="num">02</span>
+          <h3>表达语气</h3>
+          <p>专业但生活化，用真实场景解释数据，不把内容写成说明书。</p>
+          <ul>
+            <li>少讲术语堆砌</li>
+            <li>多讲生活场景</li>
+            <li>用问题带出功能</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="num">03</span>
+          <h3>表达边界</h3>
+          <p>只做日常参考和趋势观察，不制造健康焦虑，不承诺具体效果。</p>
+          <ul>
+            <li>讲趋势，不下结论</li>
+            <li>讲参考，不讲判断</li>
+            <li>讲习惯，不讲治疗</li>
+          </ul>
+        </div>
+      </div>
+      <div class="target-row">
+        <div><strong>账号一句话</strong>看懂身体状态趋势</div>
+        <div><strong>内容关键词</strong>睡眠、恢复、熬夜、HRV、皮温</div>
+        <div><strong>用户动作</strong>收藏、关注、私信、报名体验官</div>
+        <div><strong>后续承接</strong>真实反馈、直播答疑、电商转化</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Product Value</div>
+      <h2>产品卖点表达：从功能参数到用户价值</h2>
+      <div class="focus"><strong>本页重点</strong><span>把 VOXU 的产品卖点从“能记录哪些数据”转成“这些数据对用户有什么用”。</span></div>
+      <div class="value-layout">
+        <div class="three-grid">
+          <div class="panel">
+            <span class="num">01</span>
+            <h3>数据采集</h3>
+            <p>心率、血氧、HRV、皮肤温度、睡眠、活动，持续记录日常身体信号。</p>
+            <ul>
+              <li>适合长期佩戴</li>
+              <li>睡眠场景更轻便</li>
+              <li>减少手动记录成本</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <span class="num">02</span>
+            <h3>趋势理解</h3>
+            <p>不只看某一天的数值，而是观察恢复有没有变差、作息是否影响第二天。</p>
+            <ul>
+              <li>看长期变化</li>
+              <li>看作息影响</li>
+              <li>看运动后回升节奏</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <span class="num">03</span>
+            <h3>生活行动</h3>
+            <p>帮助用户复盘睡眠、运动、作息和日常状态管理，让数据回到生活里。</p>
+            <ul>
+              <li>知道何时该休息</li>
+              <li>复盘熬夜影响</li>
+              <li>形成长期记录习惯</li>
+            </ul>
+          </div>
+        </div>
+        <div class="photo" style="height:246px;">
+          <img src="新视频画面截图_拆解表/03_app-dashboard_11.0s.jpg" alt="App 数据页面">
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Content Matrix</div>
+      <h2>内容栏目矩阵与发布占比</h2>
+      <div class="focus"><strong>本页重点</strong><span>明确日常内容怎么分配，让账号内容生产有结构，而不是想到什么发什么。</span></div>
+      <div class="content-layout">
+        <div class="percent-box">
+          <h3>前 3 个月建议占比</h3>
+          <p>前期以产品认知和场景种草为主，先让用户知道 VOXU、理解差异；体验官招募和真实反馈用于建立信任；直播内容前期只做轻预热，后期再提高占比。</p>
+          <p><strong>调整原则：</strong>进入第 6 个月以后，可逐步提高直播预热和转化内容占比。</p>
+        </div>
+        <div>
+          <div class="matrix-list">
+            <div class="matrix-row"><strong>产品认知</strong><div class="bar"><span style="width:25%;"></span></div><em>25%</em></div>
+            <div class="matrix-row"><strong>场景种草</strong><div class="bar"><span style="width:25%;"></span></div><em>25%</em></div>
+            <div class="matrix-row"><strong>趋势科普</strong><div class="bar"><span style="width:20%;"></span></div><em>20%</em></div>
+            <div class="matrix-row"><strong>体验官招募</strong><div class="bar"><span style="width:15%;"></span></div><em>15%</em></div>
+            <div class="matrix-row"><strong>真实反馈</strong><div class="bar"><span style="width:10%;"></span></div><em>10%</em></div>
+            <div class="matrix-row"><strong>直播预热 / 转化</strong><div class="bar"><span style="width:5%;"></span></div><em>5%</em></div>
+          </div>
+          <div class="matrix-grid">
+            <div class="matrix-card"><h3>图文重点</h3><p>产品清单、数据解释、睡眠复盘模板、招募公告、FAQ。</p></div>
+            <div class="matrix-card"><h3>视频重点</h3><p>场景钩子、产品展示、App 数据解读、体验官反馈、直播切片。</p></div>
+            <div class="matrix-card"><h3>承接重点</h3><p>评论问题、私信关键词、报名表、直播预约、购买咨询。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Growth Roadmap</div>
+      <h2>五阶段规划总览：从冷启动到长期转化</h2>
+      <div class="focus"><strong>本页重点</strong><span>用时间轴讲清整体运营节奏：先建立产品认知，再招募体验官，之后用真实反馈建立信任，最后承接直播和转化。</span></div>
+      <div class="roadmap">
+        <div class="stage-tile now" data-num="01">
+          <span class="period">第 1-4 周</span>
+          <h3>冷启动认知期</h3>
+          <p>统一账号表达，发布第一批产品认知内容。</p>
+          <div class="output"><strong>产出：</strong>账号装修、置顶内容、认知内容模型。</div>
+        </div>
+        <div class="stage-tile" data-num="02">
+          <span class="period">第 5-8 周</span>
+          <h3>体验官招募期</h3>
+          <p>把兴趣用户转成体验官候选，启动真实反馈回收。</p>
+          <div class="output"><strong>产出：</strong>招募链路、报名表、体验官任务。</div>
+        </div>
+        <div class="stage-tile" data-num="03">
+          <span class="period">第 9-12 周</span>
+          <h3>真实种草放大期</h3>
+          <p>用真实佩戴反馈建立产品口碑。</p>
+          <div class="output"><strong>产出：</strong>UGC 合集、案例内容、二次剪辑。</div>
+        </div>
+        <div class="stage-tile" data-num="04">
+          <span class="period">第 3-6 个月</span>
+          <h3>产品信任建立期</h3>
+          <p>持续解释功能、场景和长期趋势价值。</p>
+          <div class="output"><strong>产出：</strong>FAQ、使用指南、趋势解读系列。</div>
+        </div>
+        <div class="stage-tile" data-num="05">
+          <span class="period">第 6 个月以后</span>
+          <h3>直播与长期转化期</h3>
+          <p>用内容资产承接直播、达人、电商和私域转化。</p>
+          <div class="output"><strong>产出：</strong>直播导流、直播切片、转化素材。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Stage 01</div>
+      <h2>阶段一：第 1-4 周，冷启动认知期</h2>
+      <div class="focus"><strong>本页重点</strong><span>当前阶段先把账号基础和核心表达打稳，重点验证“身体状态的翻译官”这条内容主线是否成立。</span></div>
+      <div class="stage-page">
+        <div class="stage-side">
+          <div class="stage-photo"><img src="新视频画面截图_拆解表/01_opening-ring_8.0s.jpg" alt="戒指近景"></div>
+          <div class="stage-summary">
+            <strong>第 1-4 周</strong>
+            <p>目标：让用户知道 VOXU 是什么，适合谁，为什么值得关注。</p>
+            <span class="badge">当前阶段</span>
+          </div>
+        </div>
+        <div class="stage-grid">
+          <div class="detail-card">
+            <h3>具体动作</h3>
+            <ul>
+              <li>统一账号简介、头像、封面风格和置顶内容。</li>
+              <li>明确核心表达：身体状态的翻译官。</li>
+              <li>连续发布产品认知和场景痛点内容。</li>
+              <li>预热体验官招募，测试评论和私信承接。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>图文内容</h3>
+            <ul>
+              <li>VOXU 智能戒指能看哪些数据？</li>
+              <li>为什么戒指更适合睡眠佩戴？</li>
+              <li>HRV、睡眠、皮温趋势怎么看？</li>
+              <li>长期趋势比一天数据更值得看。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>视频内容</h3>
+            <ul>
+              <li>一枚戒指，记录身体状态趋势。</li>
+              <li>睡醒还是累，可能不只是睡眠时长问题。</li>
+              <li>熬夜后，第二天状态会有什么变化？</li>
+              <li>15 秒讲清 VOXU 是什么。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>核心指标</h3>
+            <ul>
+              <li>曝光、完播、收藏、关注。</li>
+              <li>评论区高频问题数量。</li>
+              <li>私信关键词触发量。</li>
+              <li>可复用内容模型数量。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Stage 02</div>
+      <h2>阶段二：第 5-8 周，体验官招募期</h2>
+      <div class="focus"><strong>本页重点</strong><span>把产品认知带来的兴趣用户转成体验官候选，为后续真实种草和用户反馈做准备。</span></div>
+      <div class="stage-page">
+        <div class="stage-side">
+          <div class="stage-photo"><img src="新视频画面截图_拆解表/09_vibration-reminder_18.0s.jpg" alt="提醒场景"></div>
+          <div class="stage-summary">
+            <strong>第 5-8 周</strong>
+            <p>目标：把内容流量转成体验官报名和后续 UGC 素材。</p>
+            <span class="badge">招募承接</span>
+          </div>
+        </div>
+        <div class="stage-grid">
+          <div class="detail-card">
+            <h3>具体动作</h3>
+            <ul>
+              <li>上线“首批 VOXU 体验官招募”。</li>
+              <li>设置私信关键词“体验官”和统一回复话术。</li>
+              <li>建立报名表、筛选规则和体验任务。</li>
+              <li>设计佩戴记录模板，方便后续内容回收。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>图文内容</h3>
+            <ul>
+              <li>VOXU 体验官招募公告。</li>
+              <li>什么样的人适合报名？</li>
+              <li>体验官需要完成哪些任务？</li>
+              <li>7 天佩戴体验记录模板。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>视频内容</h3>
+            <ul>
+              <li>30 秒体验官招募说明。</li>
+              <li>熬夜党为什么适合体验 VOXU？</li>
+              <li>健身人群为什么要关注恢复趋势？</li>
+              <li>体验官真实佩戴任务展示。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>核心指标</h3>
+            <ul>
+              <li>私信数、报名数、有效报名率。</li>
+              <li>报名用户画像是否匹配。</li>
+              <li>招募内容收藏和转发。</li>
+              <li>可回收素材数量。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Stage 03</div>
+      <h2>阶段三：第 9-12 周，真实种草放大期</h2>
+      <div class="focus"><strong>本页重点</strong><span>让产品价值从真实体验里被看见，用体验官反馈替代单向产品介绍。</span></div>
+      <div class="stage-page">
+        <div class="stage-side">
+          <div class="stage-photo"><img src="新视频画面截图_拆解表/06_sleep-wearing_16.0s.jpg" alt="睡眠佩戴场景"></div>
+          <div class="stage-summary">
+            <strong>第 9-12 周</strong>
+            <p>目标：用体验官内容证明产品价值，而不是只靠官方介绍。</p>
+            <span class="badge">UGC 放大</span>
+          </div>
+        </div>
+        <div class="stage-grid">
+          <div class="detail-card">
+            <h3>具体动作</h3>
+            <ul>
+              <li>回收体验官图文、视频和文字反馈。</li>
+              <li>筛选高质量反馈，做合集和二次剪辑。</li>
+              <li>按睡眠、熬夜、健身、日常佩戴拆分案例。</li>
+              <li>用评论区问题继续生成答疑选题。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>图文内容</h3>
+            <ul>
+              <li>体验官 7 天佩戴反馈合集。</li>
+              <li>熬夜党戴 VOXU 后关注哪些数据？</li>
+              <li>运动后恢复状态怎么看？</li>
+              <li>用户最关心的 5 个问题。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>视频内容</h3>
+            <ul>
+              <li>体验官真实反馈混剪。</li>
+              <li>用户的一天：从睡眠到运动恢复。</li>
+              <li>评论区高频问题答疑。</li>
+              <li>一条优质 UGC 的二次剪辑版。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>核心指标</h3>
+            <ul>
+              <li>UGC 数量和可发布率。</li>
+              <li>真实反馈内容互动率。</li>
+              <li>二次剪辑完播和转粉。</li>
+              <li>用户评论中的信任问题变化。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Stage 04</div>
+      <h2>阶段四：第 3-6 个月，产品信任建立期</h2>
+      <div class="focus"><strong>本页重点</strong><span>系统解释产品功能、使用方法和长期趋势价值，让用户从知道 VOXU 变成相信 VOXU。</span></div>
+      <div class="stage-page">
+        <div class="stage-side">
+          <div class="stage-photo"><img src="新视频画面截图_拆解表/03_app-dashboard_11.0s.jpg" alt="App 数据页面"></div>
+          <div class="stage-summary">
+            <strong>第 3-6 个月</strong>
+            <p>目标：让用户从“知道 VOXU”变成“相信 VOXU”。</p>
+            <span class="badge">信任沉淀</span>
+          </div>
+        </div>
+        <div class="stage-grid">
+          <div class="detail-card">
+            <h3>具体动作</h3>
+            <ul>
+              <li>系统化讲清产品功能、佩戴和使用方法。</li>
+              <li>持续强化长期趋势比单次数值更重要。</li>
+              <li>制作智能戒指和手表的场景差异内容。</li>
+              <li>沉淀 FAQ、使用指南、购买前问题。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>图文内容</h3>
+            <ul>
+              <li>HRV 到底怎么看？</li>
+              <li>睡眠数据怎么看才有意义？</li>
+              <li>皮肤温度趋势代表什么？</li>
+              <li>VOXU 适合哪些使用场景？</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>视频内容</h3>
+            <ul>
+              <li>佩戴 30 天后能看到什么趋势？</li>
+              <li>为什么不要只盯着一天的数据？</li>
+              <li>VOXU 使用指南。</li>
+              <li>睡眠佩戴和手表佩戴差异。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>核心指标</h3>
+            <ul>
+              <li>搜索量、咨询量、主页访问。</li>
+              <li>FAQ 内容收藏率。</li>
+              <li>用户疑问是否减少。</li>
+              <li>品牌信任类评论占比。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Stage 05</div>
+      <h2>阶段五：第 6 个月以后，直播与长期转化期</h2>
+      <div class="focus"><strong>本页重点</strong><span>把前期内容资产用于直播间引流、电商承接、达人合作和长期转化。</span></div>
+      <div class="stage-page">
+        <div class="stage-side">
+          <div class="stage-photo"><img src="新视频画面截图_拆解表/08_magnetic-charge_26.5s.jpg" alt="充电盒展示"></div>
+          <div class="stage-summary">
+            <strong>第 6 个月以后</strong>
+            <p>目标：形成稳定内容资产、用户口碑和销售转化链路。</p>
+            <span class="badge">直播 / 转化</span>
+          </div>
+        </div>
+        <div class="stage-grid">
+          <div class="detail-card">
+            <h3>具体动作</h3>
+            <ul>
+              <li>常态化复用跑通的内容模型。</li>
+              <li>每场直播前做预告、预约和福利说明。</li>
+              <li>直播后输出 3-5 条高频问题切片。</li>
+              <li>承接达人合作、电商、私域和社群转化。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>图文内容</h3>
+            <ul>
+              <li>直播间预约提醒和福利清单。</li>
+              <li>购买前 FAQ：尺寸、佩戴、续航、数据怎么看。</li>
+              <li>VOXU 用户案例合集。</li>
+              <li>节日送礼 / 日常状态管理场景。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>视频内容</h3>
+            <ul>
+              <li>直播预告：今晚讲清智能戒指怎么选。</li>
+              <li>直播切片：睡眠、HRV、佩戴、续航答疑。</li>
+              <li>达人测评 / 开箱体验。</li>
+              <li>活动福利和购买引导短视频。</li>
+            </ul>
+          </div>
+          <div class="detail-card">
+            <h3>核心指标</h3>
+            <ul>
+              <li>直播预约数和直播间进入率。</li>
+              <li>停留时长和互动问题数量。</li>
+              <li>购买咨询和私域新增。</li>
+              <li>转化率、达人合作 ROI。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">First Month Plan</div>
+      <h2>第一阶段 4 周执行排期</h2>
+      <div class="focus"><strong>本页重点</strong><span>把当前启动阶段拆成可执行排期，汇报后可以直接进入账号装修、内容发布和体验官预热。</span></div>
+      <div class="calendar">
+        <div class="week-card">
+          <strong>第 1 周</strong>
+          <p>账号基础统一</p>
+          <ul>
+            <li>完成头像、简介、置顶内容、封面模板。</li>
+            <li>确定固定表达：智能戒指、身体状态翻译官、长期趋势。</li>
+            <li>产出 2 篇产品认知图文，1 条开箱短视频。</li>
+          </ul>
+        </div>
+        <div class="week-card">
+          <strong>第 2 周</strong>
+          <p>痛点内容测试</p>
+          <ul>
+            <li>围绕睡醒累、熬夜后状态、睡眠佩戴做内容。</li>
+            <li>测试问题型、对比型、场景型标题。</li>
+            <li>产出 3 篇图文，2 条短视频。</li>
+          </ul>
+        </div>
+        <div class="week-card">
+          <strong>第 3 周</strong>
+          <p>趋势认知强化</p>
+          <ul>
+            <li>解释 HRV、皮温、睡眠趋势的日常参考价值。</li>
+            <li>用 App 数据页做“怎么看趋势”的内容。</li>
+            <li>产出 2 篇科普图文，2 条数据解读视频。</li>
+          </ul>
+        </div>
+        <div class="week-card">
+          <strong>第 4 周</strong>
+          <p>体验官预热</p>
+          <ul>
+            <li>发布体验官预热内容，测试私信关键词。</li>
+            <li>整理评论区高频问题，形成下一阶段招募 FAQ。</li>
+            <li>产出 2 篇预热图文，1 条招募预热视频。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="kicker">Review Metrics</div>
+      <h2>复盘指标与下一步</h2>
+      <div class="focus"><strong>本页重点</strong><span>用阶段指标判断内容是否跑通，当前先看产品认知是否成立，再进入体验官招募。</span></div>
+      <div class="metrics-layout">
+        <div>
+          <div class="metric-list">
+            <div class="metric-card"><strong>认知</strong><span>曝光、完播、收藏、关注、主页访问</span></div>
+            <div class="metric-card"><strong>招募</strong><span>私信数、报名数、有效报名率、用户画像</span></div>
+            <div class="metric-card"><strong>种草</strong><span>UGC 数量、互动率、二次剪辑表现</span></div>
+            <div class="metric-card"><strong>信任</strong><span>搜索量、咨询量、FAQ 内容收藏率</span></div>
+            <div class="metric-card"><strong>直播</strong><span>预约数、直播间进入率、停留、转化咨询</span></div>
+            <div class="metric-card"><strong>转化</strong><span>购买咨询、成交转化、达人合作 ROI</span></div>
+          </div>
+          <p class="note">健康数据仅供日常参考，内容表达以趋势观察和状态变化为主，不作为医学判断依据。</p>
+        </div>
+        <div class="next-box">
+          <h3>下一步先做 4 件事</h3>
+          <ul>
+            <li>完成账号首页、简介、置顶内容和视觉模板统一。</li>
+            <li>围绕“身体状态的翻译官”发布第一批认知内容。</li>
+            <li>准备体验官招募公告、报名表和私信回复话术。</li>
+            <li>提前沉淀直播导流模板：预告、福利、FAQ、切片标题。</li>
+          </ul>
+          <p style="margin-top:16px;">当前判断标准：先验证用户是否愿意收藏、关注、私信，再进入体验官招募和真实种草放大。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="nav" aria-label="slide navigation">
+      <button type="button" id="prevBtn" aria-label="上一页">‹</button>
+      <button type="button" id="nextBtn" aria-label="下一页">›</button>
+    </div>
+  </main>
+
+  <script>
+    const deck = document.getElementById("deck");
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const counter = document.getElementById("counter");
+    const progressBar = document.getElementById("progressBar");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    let current = 0;
+
+    function pad(value) {
+      return String(value).padStart(2, "0");
+    }
+
+    function resizeDeck() {
+      const margin = 44;
+      const scaleX = (window.innerWidth - margin) / 1280;
+      const scaleY = (window.innerHeight - margin) / 720;
+      deck.style.transform = `translate(-50%, -50%) scale(${Math.min(scaleX, scaleY, 1)})`;
+    }
+
+    function showSlide(index, syncHash = true) {
+      current = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === current);
+      });
+      counter.textContent = `${pad(current + 1)} / ${pad(slides.length)}`;
+      progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
+      if (syncHash) {
+        history.replaceState(null, "", "#/" + (current + 1));
+      }
+    }
+
+    function readHash() {
+      const match = location.hash.match(/#\/(\d+)/);
+      return match ? Number(match[1]) - 1 : 0;
+    }
+
+    prevBtn.addEventListener("click", () => showSlide(current - 1));
+    nextBtn.addEventListener("click", () => showSlide(current + 1));
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight" || event.key === " ") {
+        event.preventDefault();
+        showSlide(current + 1);
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showSlide(current - 1);
+      }
+    });
+
+    window.addEventListener("hashchange", () => showSlide(readHash(), false));
+    window.addEventListener("resize", resizeDeck);
+
+    resizeDeck();
+    showSlide(readHash(), false);
+  </script>
+</body>
+</html>
