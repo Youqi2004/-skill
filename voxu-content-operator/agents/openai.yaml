@@ -1,0 +1,3 @@
+interface:
+  display_name: "VOXU 内容运营"
+  short_description: "将网上文案改写为 VOXU 智能戒指内容，并在确认后生成封面。"
